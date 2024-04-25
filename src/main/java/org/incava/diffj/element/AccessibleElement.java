@@ -8,9 +8,11 @@ public class AccessibleElement extends Element {
         super(node);
     }
 
-    public void compareAccess(AccessibleElement toElement, Differences differences) {
+    public int compareAccess(AccessibleElement toElement, Differences differences) {
+        String old = differences.toString();
         Access acc = new Access(getParent());
         acc.diff(toElement.getParent(), differences);
+        return old.compareTo(differences.toString());
     }
 
     public AbstractJavaNode getParent() {

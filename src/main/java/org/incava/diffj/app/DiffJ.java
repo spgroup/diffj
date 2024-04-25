@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import org.incava.analysis.BriefReport;
 import org.incava.analysis.DetailedReport;
+import org.incava.analysis.ChangedMethodsReport;
 import org.incava.analysis.FileDiffs;
 import org.incava.analysis.Report;
+import org.incava.analysis.ReportType;
 import org.incava.diffj.io.JavaElementFactory;
 import org.incava.diffj.io.JavaFSElement;
 import org.incava.diffj.lang.DiffJException;
@@ -25,7 +27,9 @@ public class DiffJ {
     private final JavaElementFactory jef;
     private final FileDiffs fileDiffs;
     
-    public DiffJ(boolean briefOutput, boolean contextOutput, boolean highlightOutput, 
+    
+
+    public DiffJ(ReportType reportType, boolean contextOutput, boolean highlightOutput, 
                  boolean recurseDirectories,
                  String fromLabel, String fromSource,
                  String toLabel, String toSource) {
@@ -36,7 +40,7 @@ public class DiffJ {
         // tr.Ace.stack("this", this, 15);
 
         Writer writer = new OutputStreamWriter(System.out);
-        this.report = briefOutput ? new BriefReport(writer) : new DetailedReport(writer, contextOutput, highlightOutput);
+        this.report = createReport(writer, reportType, contextOutput, highlightOutput); 
         this.recurseDirectories = recurseDirectories;
         this.fromLabel = fromLabel;
         this.toLabel = toLabel;
@@ -45,6 +49,13 @@ public class DiffJ {
         this.exitValue = 0;
         this.jef = new JavaElementFactory();
         this.fileDiffs = report.getDifferences();
+    }
+
+    protected Report createReport(Writer writer, ReportType report, boolean contextOutput, boolean highlightOutput) {
+        if(report == ReportType.ChangedMethodsOnly) {
+            return new ChangedMethodsReport(writer);
+        }
+        return report == ReportType.Brief ? new BriefReport(writer) : new DetailedReport(writer, contextOutput, highlightOutput);
     }
 
     protected Report getReport() {
@@ -130,11 +141,25 @@ public class DiffJ {
             System.exit(0);
         }
 
-        DiffJ diffj = new DiffJ(opts.showBriefOutput(), opts.showContextOutput(), opts.highlightOutput(),
+        ReportType r = reportTypeFromOptions(opts);
+
+        DiffJ diffj = new DiffJ(r, opts.showContextOutput(), opts.highlightOutput(),
                                 opts.recurse(),
                                 opts.getFirstFileName(), opts.getFromSource(),
                                 opts.getSecondFileName(), opts.getToSource());
         diffj.processNames(names);
+        
         System.exit(diffj.exitValue);
+    }
+
+    private static ReportType reportTypeFromOptions(Options opts) {
+        ReportType r = ReportType.Brief;
+
+        if(opts.showChangedMethodsOnly()) {
+            r = ReportType.ChangedMethodsOnly;
+        } else if (!opts.showBriefOutput()) {
+            r = ReportType.Detailed;
+        }
+        return r;
     }
 }

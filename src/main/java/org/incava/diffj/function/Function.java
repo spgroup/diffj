@@ -27,16 +27,20 @@ public abstract class Function extends CodedElement {
         return new Parameters(getFormalParameters());
     }
 
-    protected void compareParameters(Function toFunction, Differences differences) {
+    protected int compareParameters(Function toFunction, Differences differences) {
+        String old = differences.toString();
         Parameters fromParams = getParameters();
         Parameters toParams = toFunction.getParameters();
         fromParams.diff(toParams, differences);
+        return old.compareTo(differences.toString());
     }
     
-    protected void compareThrows(Function toFunction, Differences differences) {
+    protected int compareThrows(Function toFunction, Differences differences) {
+        String old = differences.toString();
         Throws fromThrows = getThrows();
         Throws toThrows = toFunction.getThrows();
         fromThrows.diff(toThrows, differences);
+        return old.compareTo(differences.toString());
     }
 
     protected Throws getThrows() {

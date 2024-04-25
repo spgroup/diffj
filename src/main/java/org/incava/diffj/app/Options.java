@@ -17,6 +17,7 @@ public class Options extends OptionSet {
 
     private boolean briefOutput = false;
     private boolean contextOutput = false;
+    private boolean changedMethodsOnly = false;
     private boolean highlightOutput = false;
     private boolean showVersion = false;
     private String fromSource = DEFAULT_SOURCE;
@@ -28,6 +29,7 @@ public class Options extends OptionSet {
 
     private final BooleanOption briefOpt;
     private final BooleanOption contextOpt;
+    private final BooleanOption changedMethodsOnlyOpt;
     private final IntegerOption tabWidthOpt;
     private final BooleanOption verboseOpt;
     private final BooleanOption versionOpt;
@@ -63,13 +65,14 @@ public class Options extends OptionSet {
             verbose = Boolean.valueOf(verboseProperty);
         }
 
-        briefOpt      = addBooleanOption("brief",     "Display output in brief form");
-        contextOpt    = addBooleanOption("context",   "Show context (non-brief form only)");
-        highlightOpt  = addBooleanOption("highlight", "Whether to use colors (context output only)");
-        tabWidthOpt   = addOption(new IntegerOption("tabwidth",  "The number of spaces to treat tabs equal to"));
-        recurseOpt    = addOption(new BooleanOption("recurse",   "Process directories recursively", 'r'));
-        verboseOpt    = addBooleanOption("verbose",   "Whether to run in verbose mode (for debugging)");
-        versionOpt    = addOption(new BooleanOption("version",   "Displays the version", 'v'));
+        briefOpt              = addBooleanOption("brief",     "Display output in brief form");
+        contextOpt            = addBooleanOption("context",   "Show context (non-brief form only)");
+        changedMethodsOnlyOpt = addBooleanOption("changed-methods-only", "Show only the signature of the methods changed");
+        highlightOpt          = addBooleanOption("highlight", "Whether to use colors (context output only)");
+        tabWidthOpt           = addOption(new IntegerOption("tabwidth",  "The number of spaces to treat tabs equal to"));
+        recurseOpt            = addOption(new BooleanOption("recurse",   "Process directories recursively", 'r'));
+        verboseOpt            = addBooleanOption("verbose",   "Whether to run in verbose mode (for debugging)");
+        versionOpt            = addOption(new BooleanOption("version",   "Displays the version", 'v'));
 
         String javaVersions = StringList.of(Java.SOURCE_1_3,
                                             Java.SOURCE_1_4,
@@ -194,6 +197,13 @@ public class Options extends OptionSet {
      */
     public boolean showContextOutput() {
         return contextOutput;
+    }
+
+    /**
+     * Whether to show only the signature of the changed methods.
+     */
+    public boolean showChangedMethodsOnly() {
+        return changedMethodsOnly;
     }
 
     /**

@@ -45,22 +45,28 @@ public class Block {
         return new TokenList(allTokens);
     }
 
-    public void compareCode(Block toBlock, Differences differences) {
+    public int compareCode(Block toBlock, Differences differences) {
+        String old = differences.toString();
         compareCodeNew(toBlock, differences);
+        return old.compareTo(differences.toString());
     }
 
-    public void compareCodeOld(Block toBlock, Differences differences) {
+    public int compareCodeOld(Block toBlock, Differences differences) {
+        String old = differences.toString();
         Code fromCode = new Code(name, getTokens());
         Code toCode = new Code(name, toBlock.getTokens());
         fromCode.diff(toCode, differences);
+        return old.compareTo(differences.toString());
     }
     
-    public void compareCodeNew(Block toBlock, Differences differences) {
+    public int compareCodeNew(Block toBlock, Differences differences) {
+        String old = differences.toString();
         StatementListDiffer diff = new StatementListDiffer(this, toBlock);
         List<StatementsDiff> diffs = diff.execute();
         for (StatementsDiff df : diffs) {
             df.execute(name, differences);
         }
+        return old.compareTo(differences.toString());
     }
 
     public String toString() {

@@ -58,7 +58,7 @@ public class Method extends Function implements Diffable<Method> {
         changed = (!compareBodies(toMethod, differences).equals(BlockChanged.NONE)) || changed;
         
         if (changed) {
-            MethodDiff.instance().addChangedMethod("(changed)" + ppMethodName());
+            MethodDiff.instance().addChangedMethod("(changed) " + ppMethodName());
         }
     }
 

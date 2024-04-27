@@ -154,7 +154,6 @@ public class DiffJ {
 
     private static ReportType reportTypeFromOptions(Options opts) {
         ReportType r = ReportType.Brief;
-
         if(opts.showChangedMethodsOnly()) {
             r = ReportType.ChangedMethodsOnly;
         } else if (!opts.showBriefOutput()) {

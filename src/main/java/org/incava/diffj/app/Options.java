@@ -67,7 +67,6 @@ public class Options extends OptionSet {
 
         briefOpt              = addBooleanOption("brief",     "Display output in brief form");
         contextOpt            = addBooleanOption("context",   "Show context (non-brief form only)");
-        changedMethodsOnlyOpt = addBooleanOption("changed-methods-only", "Show only the signature of the methods changed");
         highlightOpt          = addBooleanOption("highlight", "Whether to use colors (context output only)");
         tabWidthOpt           = addOption(new IntegerOption("tabwidth",  "The number of spaces to treat tabs equal to"));
         recurseOpt            = addOption(new BooleanOption("recurse",   "Process directories recursively", 'r'));
@@ -103,6 +102,9 @@ public class Options extends OptionSet {
 
         BooleanOption fmtOpt = new BooleanOption("format", "Sets the format to unified diff; ignored");
         addOption(fmtOpt);
+
+        changedMethodsOnlyOpt = addBooleanOption("changed-methods-only", "Show only the signature of the methods changed");
+        
         
         // addEnvironmentVariable("DIFFJ_PROPERTIES");
         
@@ -126,6 +128,11 @@ public class Options extends OptionSet {
         Boolean briefBool = briefOpt.getValue();
         if (briefBool != null) {
             briefOutput = briefBool;
+        }
+
+        Boolean changedMethodsOnlyBool = changedMethodsOnlyOpt.getValue();
+        if(changedMethodsOnlyBool != null) {
+            changedMethodsOnly = changedMethodsOnlyBool;
         }
         
         Boolean contextBool = contextOpt.getValue();

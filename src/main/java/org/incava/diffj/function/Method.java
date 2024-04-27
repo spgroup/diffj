@@ -58,7 +58,7 @@ public class Method extends Function implements Diffable<Method> {
         changed = (!compareBodies(toMethod, differences).equals(BlockChanged.NONE)) || changed;
         
         if (changed) {
-            MethodDiff.instance().addChangedMethod(ppMethodName());
+            MethodDiff.instance().addChangedMethod("(changed)" + ppMethodName());
         }
     }
 
@@ -167,7 +167,7 @@ public class Method extends Function implements Diffable<Method> {
         return (ASTClassOrInterfaceDeclaration)(Node.of(body).getParent());
     }
 
-    private String ppMethodName() {
+    public String ppMethodName() {
         Node<AbstractJavaNode> fromRetType = Node.of(getReturnType());
         String qualifiedName = clasz.getQualifiedName().toString();
         StringTokenizer tokenizer = new StringTokenizer(qualifiedName, ".");

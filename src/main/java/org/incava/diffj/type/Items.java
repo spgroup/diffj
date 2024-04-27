@@ -6,6 +6,8 @@ import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.AbstractJavaNode;
 import org.incava.diffj.element.Diffable;
 import org.incava.diffj.element.Differences;
+import org.incava.diffj.function.Method;
+import org.incava.diffj.app.MethodDiff;
 
 /**
  * Items represents the methods, ctors, fields and inner types of a parent type.
@@ -53,6 +55,10 @@ public abstract class Items<DiffJType extends Diffable<DiffJType>, PmdAstType ex
         for (DiffJType toAdd : added) {
             String name = toAdd.getName();
             differences.added(type.getNode(), toAdd.getNode(), toAdd.getAddedMessage(), name);
+            if(toAdd instanceof Method) {
+                Method m = (Method)toAdd;
+                MethodDiff.instance().addChangedMethod("(added) " + m.ppMethodName());
+            }  
         }
     }
 
@@ -60,6 +66,10 @@ public abstract class Items<DiffJType extends Diffable<DiffJType>, PmdAstType ex
         for (DiffJType goner : removed) {
             String name = goner.getName();
             differences.deleted(goner.getNode(), toType.getNode(), goner.getRemovedMessage(), name);
+            if(goner instanceof Method) {
+                Method m = (Method)goner;
+                MethodDiff.instance().addChangedMethod("(removed) " + m.ppMethodName());
+            }
         }
     }
 }

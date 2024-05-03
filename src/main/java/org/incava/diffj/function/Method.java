@@ -175,6 +175,6 @@ public class Method extends Function implements Diffable<Method> {
             qualifiedName = tokenizer.nextToken();
         }
         
-        return "<" + qualifiedName + " " + fromRetType.toString() + " " + name + ">";
+        return "<" + qualifiedName + ": " + fromRetType.toString() + " " + name + ">";
     }
 }

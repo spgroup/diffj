@@ -1,4 +1,4 @@
-package org.incava.unit;
+package org.unit;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -36,5 +36,20 @@ public class TestSuite {
                 options.recurse(), "left", options.getFromSource(), "right", options.getToSource());
 
         diff.processNames(opts); 
+    }
+
+    @Test
+    public void testMergeSimpleCase() throws Exception {
+        File left = new File(seek("diffj/example/Merge/Base.java").toURI());
+        File right = new File(seek("diffj/example/Merge/Merge.java").toURI());
+
+        List<String> opts = Arrays.asList(new String[]{left.getAbsolutePath(), right.getAbsolutePath()});
+        Options options = new Options();
+        options.process(opts);
+
+        DiffJ diff = new DiffJ(ReportType.ChangedMethodsOnly, true, options.highlightOutput(),
+                options.recurse(), "left", options.getFromSource(), "right", options.getToSource());
+
+        diff.processNames(opts);
     }
 }
